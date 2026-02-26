@@ -12,6 +12,8 @@
         :root {
             --neon-cyan: #00ffff;
             --neon-pink: #ff00ff;
+            --neon-red: #ff4444;
+            --neon-green: #00ff66;
         }
 
         body {
@@ -108,6 +110,22 @@
             box-shadow: 0 0 15px var(--neon-cyan);
         }
 
+        /* Status HUD Box - Matching Image */
+        .status-hud-box {
+            border: 1px solid currentColor;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 140px;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .status-sisa { color: var(--neon-red); text-shadow: 0 0 8px rgba(255, 68, 68, 0.4); }
+        .status-lunas { color: var(--neon-cyan); text-shadow: 0 0 8px rgba(0, 255, 255, 0.4); }
+        .status-lebih { color: var(--neon-green); text-shadow: 0 0 8px rgba(0, 255, 102, 0.4); }
+        .status-waiting { color: var(--neon-pink); text-shadow: 0 0 8px rgba(255, 0, 255, 0.4); }
+
         @media (max-width: 768px) {
             .mobile-height-limit {
                 max-height: calc(100vh - 450px);
@@ -173,9 +191,8 @@
             <!-- MAIN CONTENT AREA -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
                 
-                <!-- INPUT COLUMN (Hidden on mobile LEDGER tab) -->
+                <!-- INPUT COLUMN -->
                 <div id="inputCol" class="lg:col-span-5 space-y-4 block">
-                    <!-- Customer Identification -->
                     <div class="bg-black/60 border border-[#00ffff]/40 p-4 relative">
                         <div class="absolute -top-2 left-4 bg-black px-2 text-[8px] font-black text-[#00ffff] uppercase italic tracking-widest">
                             {">"} TARGET_ID
@@ -195,7 +212,6 @@
                         </div>
                     </div>
 
-                    <!-- Add Item Terminal -->
                     <div class="bg-black/60 border-2 border-[#00ffff] p-4 relative shadow-[0_0_10px_rgba(0,255,255,0.1)]">
                         <div class="absolute -top-3 left-4 bg-[#00ffff] px-2 py-0.5 text-[7px] font-black text-black uppercase italic flex items-center gap-1">
                             <i data-lucide="zap" class="w-2 h-2 fill-current"></i> ADD_ENTRY
@@ -213,7 +229,6 @@
                         </form>
                     </div>
 
-                    <!-- Payment Terminal -->
                     <div class="bg-black/60 border border-[#ff00ff]/30 p-4 relative">
                         <div class="absolute -top-2 left-4 bg-black px-2 text-[8px] font-black text-[#ff00ff] uppercase italic tracking-widest">
                             {">"} CREDIT_IN
@@ -227,22 +242,18 @@
                                 <i data-lucide="chevron-right" class="w-4 h-4"></i>
                             </button>
                         </form>
-                        <div id="dpList" class="flex flex-wrap gap-2 mt-2 max-h-[60px] overflow-y-auto custom-scrollbar">
-                            <!-- DP items horizontal -->
-                        </div>
+                        <div id="dpList" class="flex flex-wrap gap-2 mt-2 max-h-[60px] overflow-y-auto custom-scrollbar"></div>
                     </div>
                 </div>
 
-                <!-- VIEW COLUMN (Hidden on mobile INPUT tab) -->
+                <!-- VIEW COLUMN -->
                 <div id="viewCol" class="lg:col-span-7 space-y-4 hidden sm:block">
-                    <!-- Ledger Registry -->
                     <div class="border border-[#00ffff]/20 bg-black/40 p-3">
                         <div class="flex items-center gap-2 mb-2">
                             <i data-lucide="shopping-bag" class="text-[#ff00ff] w-3 h-3"></i>
                             <span class="text-[8px] font-black uppercase tracking-[0.2em] text-white">LEDGER_OUTPUT</span>
                             <div class="flex-1 border-t border-dashed border-[#00ffff]/20 mx-2"></div>
                         </div>
-
                         <div id="itemList" class="space-y-1.5 overflow-y-auto pr-1 custom-scrollbar mobile-height-limit lg:max-h-[500px]">
                             <div class="py-12 flex flex-col items-center justify-center opacity-20">
                                 <i data-lucide="cpu" class="w-8 h-8 animate-spin-slow"></i>
@@ -255,30 +266,32 @@
         </div>
     </div>
 
-    <!-- STICKY SUMMARY HUD -->
-    <div class="bg-black border-t-2 border-[#ff00ff] p-3 sm:p-4 shadow-[0_-5px_20px_rgba(255,0,255,0.2)] z-40 relative">
-        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row gap-3 items-center justify-between">
-            <div class="flex justify-between w-full sm:w-auto sm:gap-10">
+    <!-- STICKY SUMMARY HUD (AS PER IMAGE) -->
+    <div class="bg-black border-t-2 border-[#ff00ff] p-4 shadow-[0_-5px_20px_rgba(255,0,255,0.2)] z-40 relative">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row gap-4 items-center justify-between">
+            
+            <!-- Left Data Group -->
+            <div class="flex items-center justify-between w-full sm:w-auto gap-6 sm:gap-12">
                 <div class="flex flex-col">
-                    <span class="text-[7px] font-black text-white/40 uppercase">VAL_INV</span>
-                    <div id="totalTagihan" class="text-xs sm:text-lg font-black text-white italic">Rp0</div>
+                    <span class="text-[7px] font-bold text-white/40 uppercase tracking-widest">VAL_INV</span>
+                    <div id="totalTagihan" class="text-xl sm:text-2xl font-black text-white italic tracking-tighter">Rp0</div>
                 </div>
-                <div class="flex flex-col text-right sm:text-left">
-                    <span class="text-[7px] font-black text-[#00ffff] uppercase">CRED_SYNC</span>
-                    <div id="totalDp" class="text-xs sm:text-lg font-black text-[#00ffff] italic">Rp0</div>
+                <div class="flex flex-col">
+                    <span class="text-[7px] font-bold text-[#00ffff] uppercase tracking-widest">CRED_SYNC</span>
+                    <div id="totalDp" class="text-xl sm:text-2xl font-black text-[#00ffff] italic tracking-tighter">Rp0</div>
                 </div>
-                <div id="statusBadge" class="hidden sm:flex px-3 py-1 border-2 font-black uppercase text-[8px] tracking-widest items-center gap-2 bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]">
-                    <span>STATUS_PENDING</span>
+                
+                <!-- Status Box - Matching visual from image_53f8bb.png -->
+                <div id="statusHUD" class="status-hud-box status-waiting">
+                    <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                    <span class="text-[10px] font-black uppercase tracking-widest">WAITING</span>
                 </div>
             </div>
 
-            <div id="statusBadgeMobile" class="sm:hidden w-full px-3 py-1 border-2 font-black uppercase text-[8px] tracking-tighter flex items-center justify-center gap-2 bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]">
-                <span>STATUS_PENDING</span>
-            </div>
-
-            <button id="btnWA" class="w-full sm:w-64 py-3 flex items-center justify-center gap-2 font-black text-xs transition-all relative group overflow-hidden bg-zinc-900 text-zinc-700 border border-zinc-800 disabled:grayscale" disabled>
+            <!-- Action Button -->
+            <button id="btnWA" class="w-full sm:w-64 py-4 flex items-center justify-center gap-2 font-black text-xs transition-all relative group overflow-hidden bg-zinc-900 text-zinc-700 border border-zinc-800 disabled:grayscale" disabled>
                 <div class="relative z-10 flex items-center gap-2 uppercase tracking-[0.2em]">
-                    TRANSMIT_DATA <i data-lucide="send" class="w-4 h-4"></i>
+                    TRANSMIT_SIGNAL <i data-lucide="send" class="w-4 h-4"></i>
                 </div>
                 <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#ff00ff]/30 to-transparent -translate-x-full group-hover:animate-scan-fast pointer-events-none"></div>
             </button>
@@ -290,7 +303,7 @@
         let items = [];
         let dpList = [];
         let editingId = null;
-        let currentTab = 'input'; // 'input' or 'view'
+        let currentTab = 'input';
 
         // Elements
         const customerNameInput = document.getElementById('customerName');
@@ -301,9 +314,7 @@
         const dpListContainer = document.getElementById('dpList');
         const totalTagihanEl = document.getElementById('totalTagihan');
         const totalDpEl = document.getElementById('totalDp');
-        const grandTotalEl = document.getElementById('totalTagihan'); // Shared for total
-        const statusBadge = document.getElementById('statusBadge');
-        const statusBadgeMobile = document.getElementById('statusBadgeMobile');
+        const statusHUD = document.getElementById('statusHUD');
         const btnWA = document.getElementById('btnWA');
         const btnResetAll = document.getElementById('btnResetAll');
         const itemCountHeader = document.getElementById('itemCountHeader');
@@ -315,7 +326,6 @@
         const inputCol = document.getElementById('inputCol');
         const viewCol = document.getElementById('viewCol');
 
-        // Clock Update
         function updateClock() {
             const now = new Date();
             clockEl.textContent = now.toLocaleTimeString('id-ID', { hour12: false });
@@ -323,7 +333,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Mobile Tab Controller
         function setTab(tab) {
             currentTab = tab;
             if (tab === 'input') {
@@ -341,49 +350,15 @@
         tabInput.onclick = () => setTab('input');
         tabView.onclick = () => setTab('view');
 
-        // Render Functions
         function renderItems() {
             if (items.length === 0) {
-                itemListContainer.innerHTML = `
-                    <div class="py-12 flex flex-col items-center justify-center opacity-20 border border-dashed border-[#00ffff]/20">
-                        <i data-lucide="cpu" class="w-8 h-8 animate-spin-slow"></i>
-                        <p class="mt-4 text-[7px] font-black uppercase">Buffer Empty</p>
-                    </div>
-                `;
+                itemListContainer.innerHTML = `<div class="py-12 flex flex-col items-center justify-center opacity-20 border border-dashed border-[#00ffff]/20"><i data-lucide="cpu" class="w-8 h-8 animate-spin-slow"></i><p class="mt-4 text-[7px] font-black uppercase">Buffer Empty</p></div>`;
             } else {
                 itemListContainer.innerHTML = items.map((item, index) => {
                     if (editingId === item.id) {
-                        return `
-                        <div class="flex flex-col gap-2 bg-black/90 border border-[#ff00ff] p-2 relative shadow-neon-pink">
-                            <input id="editName-${item.id}" type="text" value="${item.name}" class="w-full bg-[#111] border border-[#ff00ff]/30 p-1.5 text-white font-black uppercase text-[10px] outline-none">
-                            <div class="flex gap-1">
-                                <input id="editQty-${item.id}" type="number" value="${item.qty}" class="w-12 bg-[#111] border border-[#ff00ff]/30 p-1.5 text-white font-black text-center text-[10px] outline-none">
-                                <input id="editPrice-${item.id}" type="number" value="${item.price}" class="flex-1 bg-[#111] border border-[#ff00ff]/30 p-1.5 text-white font-black text-[10px] outline-none">
-                                <button onclick="saveEdit(${item.id})" class="bg-[#ff00ff] text-white px-2">OK</button>
-                                <button onclick="setEditing(null)" class="bg-zinc-800 text-white px-2">X</button>
-                            </div>
-                        </div>
-                        `;
+                        return `<div class="flex flex-col gap-2 bg-black/90 border border-[#ff00ff] p-2 relative shadow-neon-pink"><input id="editName-${item.id}" type="text" value="${item.name}" class="w-full bg-[#111] border border-[#ff00ff]/30 p-1.5 text-white font-black uppercase text-[10px] outline-none"><div class="flex gap-1"><input id="editQty-${item.id}" type="number" value="${item.qty}" class="w-12 bg-[#111] border border-[#ff00ff]/30 p-1.5 text-white font-black text-center text-[10px] outline-none"><input id="editPrice-${item.id}" type="number" value="${item.price}" class="flex-1 bg-[#111] border border-[#ff00ff]/30 p-1.5 text-white font-black text-[10px] outline-none"><button onclick="saveEdit(${item.id})" class="bg-[#ff00ff] text-white px-2">OK</button><button onclick="setEditing(null)" class="bg-zinc-800 text-white px-2">X</button></div></div>`;
                     }
-                    return `
-                    <div class="group flex items-center gap-2 bg-black/60 border border-[#00ffff]/10 p-2 relative hover:border-[#ff00ff] transition-all">
-                        <div class="text-[7px] font-black text-[#00ffff]/40 w-3">${String(items.length - index).padStart(2, '0')}</div>
-                        <div class="flex-1 min-w-0">
-                            <div class="text-[10px] font-black text-white truncate uppercase">${item.name}</div>
-                            <div class="flex items-center gap-2 text-[8px] font-black text-[#00ffff]/60 uppercase">
-                                <span>${item.qty}U</span>
-                                <span>@${item.price.toLocaleString()}</span>
-                            </div>
-                        </div>
-                        <div class="text-right flex items-center gap-2">
-                            <div class="text-[10px] font-black text-[#ff00ff] italic">Rp${(item.qty * item.price).toLocaleString()}</div>
-                            <div class="flex gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button onclick="setEditing(${item.id})" class="text-[#00ffff] p-1"><i data-lucide="edit-2" class="w-2.5 h-2.5"></i></button>
-                                <button onclick="removeItem(${item.id})" class="text-red-500/50 p-1"><i data-lucide="trash-2" class="w-2.5 h-2.5"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    `;
+                    return `<div class="group flex items-center gap-2 bg-black/60 border border-[#00ffff]/10 p-2 relative hover:border-[#ff00ff] transition-all"><div class="text-[7px] font-black text-[#00ffff]/40 w-3">${String(items.length - index).padStart(2, '0')}</div><div class="flex-1 min-w-0"><div class="text-[10px] font-black text-white truncate uppercase">${item.name}</div><div class="flex items-center gap-2 text-[8px] font-black text-[#00ffff]/60 uppercase"><span>${item.qty}U</span><span>@${item.price.toLocaleString()}</span></div></div><div class="text-right flex items-center gap-2"><div class="text-[10px] font-black text-[#ff00ff] italic">Rp${(item.qty * item.price).toLocaleString()}</div><div class="flex gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity"><button onclick="setEditing(${item.id})" class="text-[#00ffff] p-1"><i data-lucide="edit-2" class="w-2.5 h-2.5"></i></button><button onclick="removeItem(${item.id})" class="text-red-500/50 p-1"><i data-lucide="trash-2" class="w-2.5 h-2.5"></i></button></div></div></div>`;
                 }).join('');
             }
             lucide.createIcons();
@@ -393,15 +368,9 @@
         function renderDp() {
             if (dpList.length === 0) {
                 dpListContainer.innerHTML = '<span class="text-[7px] text-slate-700 italic">No Credits</span>';
-                updateCalculations();
-                return;
+            } else {
+                dpListContainer.innerHTML = dpList.map(dp => `<div class="flex items-center gap-1 bg-[#00ffff]/5 p-1 border border-[#00ffff]/20 rounded"><span class="text-[8px] font-black text-white">Rp${dp.amount.toLocaleString()}</span><button onclick="removeDp(${dp.id})" class="text-red-500/50 hover:text-red-500"><i data-lucide="x" class="w-2 h-2"></i></button></div>`).join('');
             }
-            dpListContainer.innerHTML = dpList.map(dp => `
-                <div class="flex items-center gap-1 bg-[#00ffff]/5 p-1 border border-[#00ffff]/20 rounded">
-                    <span class="text-[8px] font-black text-white">Rp${dp.amount.toLocaleString()}</span>
-                    <button onclick="removeDp(${dp.id})" class="text-red-500/50 hover:text-red-500"><i data-lucide="x" class="w-2 h-2"></i></button>
-                </div>
-            `).join('');
             lucide.createIcons();
             updateCalculations();
         }
@@ -415,54 +384,37 @@
             totalDpEl.textContent = `Rp${totalDp.toLocaleString()}`;
             itemCountHeader.textContent = items.length;
 
-            const updateStatus = (badge) => {
-                if (subtotal === 0) {
-                    badge.className = "flex px-3 py-1 border-2 font-black uppercase text-[8px] tracking-widest items-center gap-2 bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]";
-                    badge.innerHTML = `<span>WAITING_INPUT</span>`;
-                    btnWA.disabled = true;
-                    btnWA.classList.add('grayscale');
-                } else if (selisih < 0) {
-                    badge.className = "flex px-3 py-1 border-2 font-black uppercase text-[8px] tracking-widest items-center gap-2 bg-red-500/10 border-red-500 text-red-500 shadow-[0_0_10px_rgba(239,68,68,0.3)]";
-                    badge.innerHTML = `<i data-lucide="coins" class="w-3 h-3"></i><span>SISA: Rp${Math.abs(selisih).toLocaleString()}</span>`;
-                    btnWA.disabled = false;
-                    btnWA.classList.remove('grayscale');
-                    btnWA.className = "w-full sm:w-64 py-3 flex items-center justify-center gap-2 font-black text-xs transition-all relative group bg-white text-black shadow-white/20";
-                } else if (selisih > 0) {
-                    badge.className = "flex px-3 py-1 border-2 font-black uppercase text-[8px] tracking-widest items-center gap-2 bg-emerald-500/10 border-emerald-500 text-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.3)]";
-                    badge.innerHTML = `<i data-lucide="check-circle-2" class="w-3 h-3"></i><span>KEMBALI: Rp${selisih.toLocaleString()}</span>`;
-                    btnWA.disabled = false;
-                    btnWA.classList.remove('grayscale');
-                    btnWA.className = "w-full sm:w-64 py-3 flex items-center justify-center gap-2 font-black text-xs transition-all relative group bg-white text-black shadow-white/20";
-                } else {
-                    badge.className = "flex px-3 py-1 border-2 font-black uppercase text-[8px] tracking-widest items-center gap-2 bg-[#00ffff]/10 border-[#00ffff] text-[#00ffff] shadow-[0_0_10px_rgba(0,255,255,0.3)]";
-                    badge.innerHTML = `<i data-lucide="check-circle-2" class="w-3 h-3"></i><span>SETTLED_LUNAS</span>`;
-                    btnWA.disabled = false;
-                    btnWA.classList.remove('grayscale');
-                    btnWA.className = "w-full sm:w-64 py-3 flex items-center justify-center gap-2 font-black text-xs transition-all relative group bg-white text-black shadow-white/20";
-                }
-            };
-
-            updateStatus(statusBadge);
-            updateStatus(statusBadgeMobile);
+            if (subtotal === 0) {
+                statusHUD.className = "status-hud-box status-waiting";
+                statusHUD.innerHTML = `<i data-lucide="alert-triangle" class="w-4 h-4"></i><span class="text-[10px] font-black uppercase tracking-widest">WAITING</span>`;
+                btnWA.disabled = true;
+                btnWA.className = "w-full sm:w-64 py-4 flex items-center justify-center gap-2 font-black text-xs transition-all relative group bg-zinc-900 text-zinc-700 border border-zinc-800 cursor-not-allowed";
+            } else if (selisih < 0) {
+                statusHUD.className = "status-hud-box status-sisa";
+                statusHUD.innerHTML = `<i data-lucide="coins" class="w-4 h-4"></i><span class="text-[10px] font-black uppercase tracking-widest">SISA: Rp${Math.abs(selisih).toLocaleString()}</span>`;
+                btnWA.disabled = false;
+                btnWA.className = "w-full sm:w-64 py-4 flex items-center justify-center gap-2 font-black text-xs transition-all relative group bg-white text-black shadow-white/20 hover:bg-[#00ffff]";
+            } else if (selisih > 0) {
+                statusHUD.className = "status-hud-box status-lebih";
+                statusHUD.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4"></i><span class="text-[10px] font-black uppercase tracking-widest">KEMBALI: Rp${selisih.toLocaleString()}</span>`;
+                btnWA.disabled = false;
+                btnWA.className = "w-full sm:w-64 py-4 flex items-center justify-center gap-2 font-black text-xs transition-all relative group bg-white text-black shadow-white/20 hover:bg-[#00ffff]";
+            } else {
+                statusHUD.className = "status-hud-box status-lunas";
+                statusHUD.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4"></i><span class="text-[10px] font-black uppercase tracking-widest">LUNAS</span>`;
+                btnWA.disabled = false;
+                btnWA.className = "w-full sm:w-64 py-4 flex items-center justify-center gap-2 font-black text-xs transition-all relative group bg-white text-black shadow-white/20 hover:bg-[#00ffff]";
+            }
             lucide.createIcons();
         }
 
-        // Action Handlers
         itemForm.onsubmit = (e) => {
             e.preventDefault();
             const name = document.getElementById('itemName').value;
             const qty = document.getElementById('itemQty').value;
             const price = document.getElementById('itemPrice').value;
-
             if (!name || !price) return;
-
-            items.unshift({
-                id: Date.now(),
-                name: name.toUpperCase(),
-                qty: parseInt(qty) || 1,
-                price: parseInt(price) || 0
-            });
-
+            items.unshift({ id: Date.now(), name: name.toUpperCase(), qty: parseInt(qty) || 1, price: parseInt(price) || 0 });
             document.getElementById('itemName').value = '';
             document.getElementById('itemPrice').value = '';
             document.getElementById('itemQty').value = '1';
@@ -474,109 +426,51 @@
             e.preventDefault();
             const value = document.getElementById('dpValue').value;
             if (!value) return;
-
-            dpList.push({
-                id: Date.now(),
-                amount: parseInt(value)
-            });
-
+            dpList.push({ id: Date.now(), amount: parseInt(value) });
             document.getElementById('dpValue').value = '';
             renderDp();
         };
 
-        window.removeItem = (id) => {
-            items = items.filter(item => item.id !== id);
-            renderItems();
-        };
-
-        window.removeDp = (id) => {
-            dpList = dpList.filter(dp => dp.id !== id);
-            renderDp();
-        };
-
-        window.setEditing = (id) => {
-            editingId = id;
-            renderItems();
-            if(id) {
-                setTimeout(() => document.getElementById(`editName-${id}`).focus(), 10);
-            }
-        };
-
+        window.removeItem = (id) => { items = items.filter(item => item.id !== id); renderItems(); };
+        window.removeDp = (id) => { dpList = dpList.filter(dp => dp.id !== id); renderDp(); };
+        window.setEditing = (id) => { editingId = id; renderItems(); if(id) { setTimeout(() => document.getElementById(`editName-${id}`).focus(), 10); } };
         window.saveEdit = (id) => {
             const newName = document.getElementById(`editName-${id}`).value;
             const newQty = document.getElementById(`editQty-${id}`).value;
             const newPrice = document.getElementById(`editPrice-${id}`).value;
-
-            items = items.map(item => {
-                if (item.id === id) {
-                    return {
-                        ...item,
-                        name: newName.toUpperCase(),
-                        qty: parseInt(newQty) || 0,
-                        price: parseInt(newPrice) || 0
-                    };
-                }
-                return item;
-            });
-
+            items = items.map(item => item.id === id ? { ...item, name: newName.toUpperCase(), qty: parseInt(newQty) || 0, price: parseInt(newPrice) || 0 } : item);
             editingId = null;
             renderItems();
         };
 
         btnResetAll.onclick = () => {
             if (confirm("KONFIRMASI: Hapus seluruh data sistem?")) {
-                items = [];
-                dpList = [];
-                editingId = null;
-                customerNameInput.value = '';
-                phoneInput.value = '';
-                document.getElementById('itemName').value = '';
-                document.getElementById('itemPrice').value = '';
-                document.getElementById('itemQty').value = '1';
-                document.getElementById('dpValue').value = '';
-                
-                renderItems();
-                renderDp();
-                setTab('input');
-                customerNameInput.focus();
+                items = []; dpList = []; editingId = null; customerNameInput.value = ''; phoneInput.value = ''; renderItems(); renderDp(); setTab('input'); customerNameInput.focus();
             }
         };
 
         btnWA.onclick = () => {
             const rawName = customerNameInput.value.trim() || 'Customer';
-            const formattedName = rawName.split(' ')
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-                .join(' ');
-                
+            const formattedName = rawName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
             const subtotal = items.reduce((sum, item) => sum + (item.qty * item.price), 0);
             const totalDp = dpList.reduce((sum, dp) => sum + dp.amount, 0);
             const selisih = totalDp - subtotal;
-            
             let statusText = "Lunas";
             if (selisih < 0) statusText = `Sisa Tagihan: Rp${Math.abs(selisih).toLocaleString()}`;
             if (selisih > 0) statusText = `Lunas & Kembalian: Rp${selisih.toLocaleString()}`;
-
             let message = `List Lelangan *${formattedName}*\n`;
             items.forEach((item, index) => {
-                message += `${index + 1}. ${item.name} (${item.qty}x) = ${item.qty * item.price}\n`;
+                const qtyLabel = item.qty > 1 ? ` (${item.qty}x)` : '';
+                message += `${index + 1}. ${item.name}${qtyLabel} = ${item.qty * item.price}\n`;
             });
-            message += `\ntotal tagihan = ${subtotal}\n`;
-            message += `dp diterima = ${totalDp}\n`;
-            message += `Status = ${statusText}`;
-
+            message += `\ntotal tagihan = ${subtotal}\ndp diterima = ${totalDp}\nStatus = ${statusText}`;
             const phone = phoneInput.value.replace(/[^0-9]/g, '');
-            const waUrl = phone 
-                ? `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
-                : `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
-            
+            const waUrl = phone ? `https://wa.me/${phone}?text=${encodeURIComponent(message)}` : `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
             window.open(waUrl, '_blank');
         };
 
-        // Initialize Icons & UI
         lucide.createIcons();
-        if (window.innerWidth <= 768) {
-            setTab('input');
-        }
+        if (window.innerWidth <= 768) { setTab('input'); }
     </script>
 </body>
 </html>
