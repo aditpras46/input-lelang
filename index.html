@@ -19,6 +19,9 @@
             color: var(--neon-cyan);
             font-family: 'JetBrains Mono', monospace;
             overflow-x: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Efek Scanline */
@@ -97,6 +100,19 @@
 
         .shadow-neon-pink { box-shadow: 0 0 15px rgba(255, 0, 255, 0.4); }
         .shadow-neon-cyan { box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); }
+
+        /* Mobile Tab Specific */
+        .tab-active {
+            background: var(--neon-cyan);
+            color: black;
+            box-shadow: 0 0 15px var(--neon-cyan);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-height-limit {
+                max-height: calc(100vh - 450px);
+            }
+        }
     </style>
 </head>
 <body class="selection:bg-[#ff00ff]/30">
@@ -104,212 +120,177 @@
     <div class="scanlines"></div>
     <div class="cyber-grid"></div>
 
-    <div class="max-w-5xl mx-auto p-3 sm:p-4 md:p-8 space-y-4 sm:space-y-6 pb-24 sm:pb-8">
-        
-        <!-- HEADER HUD -->
-        <header class="relative border-2 border-[#ff00ff] bg-black/80 p-4 sm:p-6 shadow-neon-pink overflow-hidden">
-            <div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#00ffff]"></div>
-            <div class="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[#00ffff]"></div>
-            <div class="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[#00ffff]"></div>
-            <div class="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#00ffff]"></div>
-
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <div class="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
-                    <div class="p-2 sm:p-3 border border-[#00ffff] shadow-neon-cyan animate-pulse">
-                        <i data-lucide="terminal" class="w-6 h-6 sm:w-8 sm:h-8"></i>
-                    </div>
-                    <div class="overflow-hidden">
-                        <h1 class="text-xl sm:text-3xl font-extrabold tracking-widest text-white italic glitch-text truncate" data-text="FHJ-NOTA">
-                            FHJ-NOTA <span class="text-[#ff00ff]">v4.0</span>
-                        </h1>
-                        <p class="text-[8px] sm:text-[10px] text-[#00ffff]/60 font-bold uppercase tracking-[0.2em] flex items-center gap-2">
-                            <i data-lucide="activity" class="w-2.5 h-2.5 text-[#ff00ff]"></i> 
-                            STATUS: ONLINE // <span id="clock">00:00:00</span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="flex gap-2 w-full sm:w-auto">
-                    <!-- RESET SYSTEM BUTTON -->
-                    <button id="btnResetAll" class="px-3 py-1 border border-red-500/50 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all text-[8px] sm:text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
-                        <i data-lucide="refresh-cw" class="w-3 h-3"></i> RESET_SYSTEM
-                    </button>
-                    
-                    <div class="px-3 py-1 border border-[#00ffff]/30 bg-[#00ffff]/5 flex-1 text-center hidden sm:block">
-                        <div class="text-[7px] text-white/40 uppercase mb-0.5">SIGNAL</div>
-                        <div class="flex gap-0.5 justify-center">
-                            <div class="h-2 w-1 bg-[#00ffff]"></div>
-                            <div class="h-2 w-1 bg-[#00ffff]"></div>
-                            <div class="h-2 w-1 bg-[#00ffff]"></div>
-                            <div class="h-2 w-1 bg-[#00ffff]"></div>
-                            <div class="h-2 w-1 bg-slate-800"></div>
-                        </div>
-                    </div>
-                    <div class="px-3 py-1 border border-[#ff00ff]/30 bg-[#ff00ff]/5 flex-1 text-center">
-                        <div class="text-[7px] text-white/40 uppercase mb-0.5">SECURE</div>
-                        <div class="flex items-center justify-center gap-1 text-[#ff00ff] text-[8px] font-black italic">
-                           <i data-lucide="shield-check" class="w-2.5 h-2.5"></i> ENC
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- INPUT SECTION -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
+    <!-- MAIN CONTAINER -->
+    <div class="flex-1 overflow-y-auto custom-scrollbar flex flex-col">
+        <div class="max-w-5xl mx-auto w-full p-2 sm:p-4 md:p-8 space-y-3 sm:space-y-6">
             
-            <!-- Customer Info -->
-            <div class="lg:col-span-4 space-y-4">
-                <div class="bg-black/60 border border-[#00ffff]/40 p-4 relative">
-                    <div class="absolute -top-2 left-4 bg-black px-2 text-[8px] font-black text-[#00ffff] uppercase italic">
-                        {">"} IDENTIFY_TARGET
-                    </div>
-                    <div class="space-y-3 pt-2">
-                        <div>
-                            <label class="text-[7px] font-bold text-[#ff00ff] uppercase mb-1 block">Nama Pelanggan</label>
-                            <input id="customerName" type="text" placeholder="REQUIRED..." class="w-full bg-[#111] border border-[#00ffff]/20 p-2.5 outline-none focus:border-[#ff00ff] text-white font-bold text-sm">
+            <!-- HEADER HUD -->
+            <header class="relative border-2 border-[#ff00ff] bg-black/80 p-3 sm:p-6 shadow-neon-pink overflow-hidden">
+                <div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#00ffff]"></div>
+                <div class="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[#00ffff]"></div>
+                <div class="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[#00ffff]"></div>
+                <div class="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#00ffff]"></div>
+
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <div class="p-2 border border-[#00ffff] shadow-neon-cyan animate-pulse">
+                            <i data-lucide="terminal" class="w-5 h-5 sm:w-8 sm:h-8"></i>
                         </div>
-                        <div>
-                            <label class="text-[7px] font-bold text-[#ff00ff] uppercase mb-1 block">WhatsApp</label>
-                            <div class="flex items-center bg-[#111] border border-[#00ffff]/20 focus-within:border-[#ff00ff]">
-                                <span class="px-3 text-[#00ffff] font-black">+</span>
-                                <input id="phone" type="text" placeholder="628..." class="w-full bg-transparent p-2.5 pl-0 outline-none text-white font-bold text-sm">
+                        <div class="overflow-hidden">
+                            <h1 class="text-lg sm:text-3xl font-extrabold tracking-widest text-white italic glitch-text truncate" data-text="FHJ-NOTA">
+                                FHJ-NOTA <span class="text-[#ff00ff]">v4.0</span>
+                            </h1>
+                            <p class="text-[7px] sm:text-[10px] text-[#00ffff]/60 font-bold uppercase tracking-[0.2em] flex items-center gap-2">
+                                <i data-lucide="activity" class="w-2.5 h-2.5 text-[#ff00ff]"></i> 
+                                <span id="clock">00:00:00</span> // INV:<span id="itemCountHeader">0</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2 w-full sm:w-auto">
+                        <button id="btnResetAll" class="flex-1 sm:flex-none px-2 py-1 border border-red-500/50 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all text-[8px] font-black uppercase tracking-widest flex items-center justify-center gap-1">
+                            <i data-lucide="refresh-cw" class="w-2.5 h-2.5"></i> RESET
+                        </button>
+                        <div class="px-3 py-1 border border-[#ff00ff]/30 bg-[#ff00ff]/5 flex-1 text-center">
+                            <div class="flex items-center justify-center gap-1 text-[#ff00ff] text-[8px] font-black italic">
+                               <i data-lucide="shield-check" class="w-2.5 h-2.5"></i> SECURE_NODE
                             </div>
                         </div>
                     </div>
                 </div>
+            </header>
 
-                <div class="bg-[#ff00ff]/5 border border-[#ff00ff]/40 p-3 relative">
-                    <div class="absolute -top-2 right-4 bg-black px-2 text-[8px] font-black text-[#ff00ff] uppercase italic">
-                        {">"} DIAGNOSTICS
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 pt-1">
-                        <div class="border-l-2 border-[#00ffff] pl-2">
-                            <div class="text-[7px] text-white/40 uppercase">Inventory</div>
-                            <div id="itemCount" class="text-sm font-black text-white">0</div>
-                        </div>
-                        <div class="border-l-2 border-[#ff00ff] pl-2">
-                            <div class="text-[7px] text-white/40 uppercase">Sync</div>
-                            <div class="text-[10px] font-black text-[#ff00ff] animate-pulse">ACTIVE</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item Entry -->
-            <div class="lg:col-span-8 space-y-4">
-                <div class="bg-black/60 border-2 border-[#00ffff] p-4 relative shadow-[0_0_20px_rgba(0,255,255,0.1)]">
-                    <div class="absolute -top-3 left-4 bg-[#00ffff] px-2 py-1 text-[7px] font-black text-black uppercase italic flex items-center gap-1.5">
-                        <i data-lucide="zap" class="w-2.5 h-2.5 fill-current"></i> COMMAND: ADD_ITEM
-                    </div>
-                    
-                    <form id="itemForm" class="grid grid-cols-12 gap-2 mt-2">
-                        <div class="col-span-12 md:col-span-6">
-                            <input id="itemName" type="text" placeholder="NAMA BARANG..." class="w-full bg-black border border-[#00ffff]/30 p-2.5 focus:ring-1 focus:ring-[#ff00ff] outline-none text-[#ff00ff] font-black uppercase text-xs">
-                        </div>
-                        <div class="col-span-4 md:col-span-2">
-                            <input id="itemQty" type="number" placeholder="QTY" value="1" class="w-full bg-black border border-[#00ffff]/30 p-2.5 text-center outline-none text-white font-black text-xs">
-                        </div>
-                        <div class="col-span-8 md:col-span-4 flex gap-2">
-                            <input id="itemPrice" type="number" placeholder="HARGA..." class="flex-1 bg-black border border-[#00ffff]/30 p-2.5 outline-none text-white font-black text-xs">
-                            <button type="submit" class="bg-[#00ffff] text-black px-4 hover:bg-[#ff00ff] hover:text-white transition-all active:scale-95 shadow-neon-cyan">
-                                <i data-lucide="plus" stroke-width="4"></i>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Ledger List -->
-                <div class="border border-[#00ffff]/20 bg-black/40 p-3">
-                    <div class="flex items-center gap-2 mb-3">
-                        <i data-lucide="shopping-bag" class="text-[#ff00ff] w-3 h-3"></i>
-                        <span class="text-[8px] font-black uppercase tracking-[0.2em] text-white">MAIN_REGISTRY_LEDGER</span>
-                        <div class="flex-1 border-t border-dashed border-[#00ffff]/20 mx-2"></div>
-                    </div>
-
-                    <div id="itemList" class="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
-                        <!-- Items rendered here -->
-                        <div class="py-12 flex flex-col items-center justify-center opacity-30">
-                            <i data-lucide="cpu" class="w-8 h-8 animate-spin-slow"></i>
-                            <p class="mt-2 text-[8px] font-black uppercase italic">Buffer Empty</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SETTLEMENT TERMINAL -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 pb-4">
-            
-            <!-- DP Log -->
-            <div class="md:col-span-5 bg-black/80 border border-[#ff00ff]/30 p-4 shadow-lg">
-                <h4 class="text-[8px] font-black text-[#ff00ff] uppercase mb-3 flex items-center gap-2">
-                    <i data-lucide="history" class="w-3 h-3"></i> SETTLEMENT_LOG
-                </h4>
-                
-                <form id="dpForm" class="relative mb-3">
-                    <input id="dpValue" type="number" placeholder="INPUT PAYMENT..." class="w-full bg-[#111] border border-[#ff00ff]/20 p-2.5 pr-10 outline-none focus:border-[#00ffff] text-[#00ffff] font-black italic text-xs">
-                    <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 text-[#ff00ff] hover:text-white">
-                        <i data-lucide="chevron-right"></i>
-                    </button>
-                </form>
-
-                <div id="dpList" class="space-y-2 max-h-[120px] overflow-y-auto custom-scrollbar">
-                    <!-- DP items rendered here -->
-                </div>
-            </div>
-
-            <!-- Summary -->
-            <div class="md:col-span-7 bg-black/80 border-2 border-[#ff00ff] p-4 sm:p-6 relative shadow-neon-pink">
-                <div class="grid grid-cols-2 gap-4 mb-4 border-b border-[#ff00ff]/20 pb-4">
-                    <div>
-                        <span class="text-[7px] font-black text-white/40 uppercase block mb-0.5">SUBTOTAL_INV</span>
-                        <div id="totalTagihan" class="text-sm sm:text-lg font-black text-white italic">Rp0</div>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-[7px] font-black text-[#00ffff] uppercase block mb-0.5">CREDIT_SYNC</span>
-                        <div id="totalDp" class="text-sm sm:text-lg font-black text-[#00ffff] italic">Rp0</div>
-                    </div>
-                </div>
-
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6">
-                    <div class="flex-1">
-                        <span class="text-[7px] font-black text-[#ff00ff] uppercase block mb-1 text-center sm:text-left">TOTAL SETTLEMENT</span>
-                        <div id="grandTotal" class="text-3xl sm:text-4xl font-black text-white italic text-center sm:text-left">
-                            <span class="text-[#00ffff] text-base mr-1 font-normal opacity-50 not-italic">Rp</span>0
-                        </div>
-                    </div>
-                    <div id="statusBadge" class="px-3 py-2 border-2 font-black uppercase text-[8px] tracking-widest flex items-center gap-2 shadow-lg justify-center bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]">
-                        <i data-lucide="alert-triangle" class="w-3 h-3"></i>
-                        <span>MENUNGGU DATA</span>
-                    </div>
-                </div>
-
-                <button id="btnWA" class="w-full py-4 flex items-center justify-center gap-3 font-black text-base transition-all relative group overflow-hidden bg-zinc-900 text-zinc-700 border border-zinc-800" disabled>
-                    <div class="relative z-10 flex items-center gap-2 uppercase tracking-[0.1em]">
-                        EXECUTE SIGNAL <i data-lucide="send" class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#ff00ff]/30 to-transparent -translate-x-full group-hover:animate-scan-fast pointer-events-none"></div>
+            <!-- MOBILE TABS NAVIGATION -->
+            <div class="flex sm:hidden border-b border-[#00ffff]/20">
+                <button id="tabInput" class="flex-1 py-2 text-[10px] font-black tracking-widest uppercase tab-active border-r border-[#00ffff]/20">
+                    TERMINAL_IN
                 </button>
+                <button id="tabView" class="flex-1 py-2 text-[10px] font-black tracking-widest uppercase">
+                    LEDGER_OUT
+                </button>
+            </div>
+
+            <!-- MAIN CONTENT AREA -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                
+                <!-- INPUT COLUMN (Hidden on mobile LEDGER tab) -->
+                <div id="inputCol" class="lg:col-span-5 space-y-4 block">
+                    <!-- Customer Identification -->
+                    <div class="bg-black/60 border border-[#00ffff]/40 p-4 relative">
+                        <div class="absolute -top-2 left-4 bg-black px-2 text-[8px] font-black text-[#00ffff] uppercase italic tracking-widest">
+                            {">"} TARGET_ID
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <div class="col-span-2 sm:col-span-1">
+                                <label class="text-[7px] font-bold text-[#ff00ff] uppercase mb-1 block">Pelanggan</label>
+                                <input id="customerName" type="text" placeholder="NAME..." class="w-full bg-[#111] border border-[#00ffff]/20 p-2 outline-none focus:border-[#ff00ff] text-white font-bold text-xs uppercase">
+                            </div>
+                            <div class="col-span-2 sm:col-span-1">
+                                <label class="text-[7px] font-bold text-[#ff00ff] uppercase mb-1 block">WhatsApp</label>
+                                <div class="flex items-center bg-[#111] border border-[#00ffff]/20 focus-within:border-[#ff00ff]">
+                                    <span class="px-2 text-[#00ffff] font-black text-xs">+</span>
+                                    <input id="phone" type="text" placeholder="628..." class="w-full bg-transparent p-2 pl-0 outline-none text-white font-bold text-xs">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Item Terminal -->
+                    <div class="bg-black/60 border-2 border-[#00ffff] p-4 relative shadow-[0_0_10px_rgba(0,255,255,0.1)]">
+                        <div class="absolute -top-3 left-4 bg-[#00ffff] px-2 py-0.5 text-[7px] font-black text-black uppercase italic flex items-center gap-1">
+                            <i data-lucide="zap" class="w-2 h-2 fill-current"></i> ADD_ENTRY
+                        </div>
+                        
+                        <form id="itemForm" class="space-y-3 mt-1">
+                            <input id="itemName" type="text" placeholder="NAMA BARANG..." class="w-full bg-black border border-[#00ffff]/30 p-2 focus:ring-1 focus:ring-[#ff00ff] outline-none text-[#ff00ff] font-black uppercase text-xs">
+                            <div class="flex gap-2">
+                                <input id="itemQty" type="number" placeholder="QTY" value="1" class="w-16 bg-black border border-[#00ffff]/30 p-2 text-center outline-none text-white font-black text-xs">
+                                <input id="itemPrice" type="number" placeholder="HARGA..." class="flex-1 bg-black border border-[#00ffff]/30 p-2 outline-none text-white font-black text-xs">
+                                <button type="submit" class="bg-[#00ffff] text-black px-4 hover:bg-[#ff00ff] hover:text-white transition-all shadow-neon-cyan">
+                                    <i data-lucide="plus" stroke-width="4" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Payment Terminal -->
+                    <div class="bg-black/60 border border-[#ff00ff]/30 p-4 relative">
+                        <div class="absolute -top-2 left-4 bg-black px-2 text-[8px] font-black text-[#ff00ff] uppercase italic tracking-widest">
+                            {">"} CREDIT_IN
+                        </div>
+                        <form id="dpForm" class="relative pt-1 flex gap-2">
+                            <div class="flex-1 relative">
+                                <span class="absolute left-2 top-1/2 -translate-y-1/2 text-[#ff00ff] text-[10px] font-bold">Rp</span>
+                                <input id="dpValue" type="number" placeholder="PAYMENT..." class="w-full bg-[#111] border border-[#ff00ff]/20 p-2 pl-7 outline-none focus:border-[#00ffff] text-[#00ffff] font-black text-xs">
+                            </div>
+                            <button type="submit" class="bg-[#ff00ff]/20 border border-[#ff00ff]/50 text-[#ff00ff] px-3 hover:bg-[#ff00ff] hover:text-white transition-all">
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </form>
+                        <div id="dpList" class="flex flex-wrap gap-2 mt-2 max-h-[60px] overflow-y-auto custom-scrollbar">
+                            <!-- DP items horizontal -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW COLUMN (Hidden on mobile INPUT tab) -->
+                <div id="viewCol" class="lg:col-span-7 space-y-4 hidden sm:block">
+                    <!-- Ledger Registry -->
+                    <div class="border border-[#00ffff]/20 bg-black/40 p-3">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i data-lucide="shopping-bag" class="text-[#ff00ff] w-3 h-3"></i>
+                            <span class="text-[8px] font-black uppercase tracking-[0.2em] text-white">LEDGER_OUTPUT</span>
+                            <div class="flex-1 border-t border-dashed border-[#00ffff]/20 mx-2"></div>
+                        </div>
+
+                        <div id="itemList" class="space-y-1.5 overflow-y-auto pr-1 custom-scrollbar mobile-height-limit lg:max-h-[500px]">
+                            <div class="py-12 flex flex-col items-center justify-center opacity-20">
+                                <i data-lucide="cpu" class="w-8 h-8 animate-spin-slow"></i>
+                                <p class="mt-2 text-[7px] font-black uppercase">Buffer Empty</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- FOOTER -->
-    <div class="fixed bottom-0 left-0 w-full bg-black/95 border-t border-[#00ffff]/30 p-2 z-40 flex justify-between px-4 items-center backdrop-blur-md">
-         <div class="flex items-center gap-3 text-[7px] font-black tracking-widest text-[#00ffff]/40">
-            <span class="flex items-center gap-1"><i data-lucide="cpu" class="w-2 h-2"></i> CPU: 12%</span>
-            <span class="flex items-center gap-1"><i data-lucide="activity" class="w-2 h-2"></i> MEM: 4.2G</span>
-         </div>
-         <p class="text-[7px] text-[#ff00ff]/40 font-black uppercase tracking-[0.2em]">
-           NODE://FHJ_PRO_V4_STATIC
-         </p>
+    <!-- STICKY SUMMARY HUD -->
+    <div class="bg-black border-t-2 border-[#ff00ff] p-3 sm:p-4 shadow-[0_-5px_20px_rgba(255,0,255,0.2)] z-40 relative">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row gap-3 items-center justify-between">
+            <div class="flex justify-between w-full sm:w-auto sm:gap-10">
+                <div class="flex flex-col">
+                    <span class="text-[7px] font-black text-white/40 uppercase">VAL_INV</span>
+                    <div id="totalTagihan" class="text-xs sm:text-lg font-black text-white italic">Rp0</div>
+                </div>
+                <div class="flex flex-col text-right sm:text-left">
+                    <span class="text-[7px] font-black text-[#00ffff] uppercase">CRED_SYNC</span>
+                    <div id="totalDp" class="text-xs sm:text-lg font-black text-[#00ffff] italic">Rp0</div>
+                </div>
+                <div id="statusBadge" class="hidden sm:flex px-3 py-1 border-2 font-black uppercase text-[8px] tracking-widest items-center gap-2 bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]">
+                    <span>STATUS_PENDING</span>
+                </div>
+            </div>
+
+            <div id="statusBadgeMobile" class="sm:hidden w-full px-3 py-1 border-2 font-black uppercase text-[8px] tracking-tighter flex items-center justify-center gap-2 bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]">
+                <span>STATUS_PENDING</span>
+            </div>
+
+            <button id="btnWA" class="w-full sm:w-64 py-3 flex items-center justify-center gap-2 font-black text-xs transition-all relative group overflow-hidden bg-zinc-900 text-zinc-700 border border-zinc-800 disabled:grayscale" disabled>
+                <div class="relative z-10 flex items-center gap-2 uppercase tracking-[0.2em]">
+                    TRANSMIT_DATA <i data-lucide="send" class="w-4 h-4"></i>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#ff00ff]/30 to-transparent -translate-x-full group-hover:animate-scan-fast pointer-events-none"></div>
+            </button>
+        </div>
     </div>
 
     <script>
         // State
         let items = [];
         let dpList = [];
+        let editingId = null;
+        let currentTab = 'input'; // 'input' or 'view'
 
         // Elements
         const customerNameInput = document.getElementById('customerName');
@@ -320,12 +301,19 @@
         const dpListContainer = document.getElementById('dpList');
         const totalTagihanEl = document.getElementById('totalTagihan');
         const totalDpEl = document.getElementById('totalDp');
-        const grandTotalEl = document.getElementById('grandTotal');
+        const grandTotalEl = document.getElementById('totalTagihan'); // Shared for total
         const statusBadge = document.getElementById('statusBadge');
+        const statusBadgeMobile = document.getElementById('statusBadgeMobile');
         const btnWA = document.getElementById('btnWA');
         const btnResetAll = document.getElementById('btnResetAll');
-        const itemCountEl = document.getElementById('itemCount');
+        const itemCountHeader = document.getElementById('itemCountHeader');
         const clockEl = document.getElementById('clock');
+        
+        // Tab Elements
+        const tabInput = document.getElementById('tabInput');
+        const tabView = document.getElementById('tabView');
+        const inputCol = document.getElementById('inputCol');
+        const viewCol = document.getElementById('viewCol');
 
         // Clock Update
         function updateClock() {
@@ -335,48 +323,83 @@
         setInterval(updateClock, 1000);
         updateClock();
 
+        // Mobile Tab Controller
+        function setTab(tab) {
+            currentTab = tab;
+            if (tab === 'input') {
+                tabInput.classList.add('tab-active');
+                tabView.classList.remove('tab-active');
+                inputCol.classList.remove('hidden');
+                viewCol.classList.add('hidden');
+            } else {
+                tabInput.classList.remove('tab-active');
+                tabView.classList.add('tab-active');
+                inputCol.classList.add('hidden');
+                viewCol.classList.remove('hidden');
+            }
+        }
+        tabInput.onclick = () => setTab('input');
+        tabView.onclick = () => setTab('view');
+
         // Render Functions
         function renderItems() {
             if (items.length === 0) {
                 itemListContainer.innerHTML = `
-                    <div class="py-12 flex flex-col items-center justify-center opacity-30 border border-dashed border-[#00ffff]/20">
+                    <div class="py-12 flex flex-col items-center justify-center opacity-20 border border-dashed border-[#00ffff]/20">
                         <i data-lucide="cpu" class="w-8 h-8 animate-spin-slow"></i>
-                        <p class="mt-4 text-[8px] font-black uppercase italic">Buffer Empty</p>
+                        <p class="mt-4 text-[7px] font-black uppercase">Buffer Empty</p>
                     </div>
                 `;
             } else {
-                itemListContainer.innerHTML = items.map((item, index) => `
-                    <div class="group flex items-center gap-3 bg-black/80 border border-[#00ffff]/10 p-3 relative hover:border-[#ff00ff] transition-all overflow-hidden">
-                        <div class="absolute left-0 top-0 bottom-0 w-0.5 bg-[#00ffff] group-hover:bg-[#ff00ff]"></div>
-                        <div class="text-[8px] font-black text-[#00ffff]/40 w-4">${String(items.length - index).padStart(2, '0')}</div>
+                itemListContainer.innerHTML = items.map((item, index) => {
+                    if (editingId === item.id) {
+                        return `
+                        <div class="flex flex-col gap-2 bg-black/90 border border-[#ff00ff] p-2 relative shadow-neon-pink">
+                            <input id="editName-${item.id}" type="text" value="${item.name}" class="w-full bg-[#111] border border-[#ff00ff]/30 p-1.5 text-white font-black uppercase text-[10px] outline-none">
+                            <div class="flex gap-1">
+                                <input id="editQty-${item.id}" type="number" value="${item.qty}" class="w-12 bg-[#111] border border-[#ff00ff]/30 p-1.5 text-white font-black text-center text-[10px] outline-none">
+                                <input id="editPrice-${item.id}" type="number" value="${item.price}" class="flex-1 bg-[#111] border border-[#ff00ff]/30 p-1.5 text-white font-black text-[10px] outline-none">
+                                <button onclick="saveEdit(${item.id})" class="bg-[#ff00ff] text-white px-2">OK</button>
+                                <button onclick="setEditing(null)" class="bg-zinc-800 text-white px-2">X</button>
+                            </div>
+                        </div>
+                        `;
+                    }
+                    return `
+                    <div class="group flex items-center gap-2 bg-black/60 border border-[#00ffff]/10 p-2 relative hover:border-[#ff00ff] transition-all">
+                        <div class="text-[7px] font-black text-[#00ffff]/40 w-3">${String(items.length - index).padStart(2, '0')}</div>
                         <div class="flex-1 min-w-0">
-                            <div class="text-xs font-black text-white truncate">${item.name}</div>
-                            <div class="flex items-center gap-2 mt-0.5 text-[7px] font-black uppercase text-[#00ffff]/60">
+                            <div class="text-[10px] font-black text-white truncate uppercase">${item.name}</div>
+                            <div class="flex items-center gap-2 text-[8px] font-black text-[#00ffff]/60 uppercase">
                                 <span>${item.qty}U</span>
-                                <span class="opacity-20">/</span>
                                 <span>@${item.price.toLocaleString()}</span>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <div class="text-xs font-black text-[#ff00ff] italic">Rp${(item.qty * item.price).toLocaleString()}</div>
-                            <button onclick="removeItem(${item.id})" class="text-[#00ffff]/20 hover:text-red-500 p-1">
-                                <i data-lucide="trash-2" class="w-3 h-3"></i>
-                            </button>
+                        <div class="text-right flex items-center gap-2">
+                            <div class="text-[10px] font-black text-[#ff00ff] italic">Rp${(item.qty * item.price).toLocaleString()}</div>
+                            <div class="flex gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button onclick="setEditing(${item.id})" class="text-[#00ffff] p-1"><i data-lucide="edit-2" class="w-2.5 h-2.5"></i></button>
+                                <button onclick="removeItem(${item.id})" class="text-red-500/50 p-1"><i data-lucide="trash-2" class="w-2.5 h-2.5"></i></button>
+                            </div>
                         </div>
                     </div>
-                `).join('');
+                    `;
+                }).join('');
             }
             lucide.createIcons();
             updateCalculations();
         }
 
         function renderDp() {
+            if (dpList.length === 0) {
+                dpListContainer.innerHTML = '<span class="text-[7px] text-slate-700 italic">No Credits</span>';
+                updateCalculations();
+                return;
+            }
             dpListContainer.innerHTML = dpList.map(dp => `
-                <div class="flex justify-between items-center bg-[#00ffff]/5 p-2 border-l border-[#00ffff] group">
-                    <span class="text-[10px] font-black text-white">+ Rp${dp.amount.toLocaleString()}</span>
-                    <button onclick="removeDp(${dp.id})" class="text-[#ff00ff]/20 hover:text-red-500 p-1">
-                        <i data-lucide="trash-2" class="w-2.5 h-2.5"></i>
-                    </button>
+                <div class="flex items-center gap-1 bg-[#00ffff]/5 p-1 border border-[#00ffff]/20 rounded">
+                    <span class="text-[8px] font-black text-white">Rp${dp.amount.toLocaleString()}</span>
+                    <button onclick="removeDp(${dp.id})" class="text-red-500/50 hover:text-red-500"><i data-lucide="x" class="w-2 h-2"></i></button>
                 </div>
             `).join('');
             lucide.createIcons();
@@ -390,30 +413,37 @@
 
             totalTagihanEl.textContent = `Rp${subtotal.toLocaleString()}`;
             totalDpEl.textContent = `Rp${totalDp.toLocaleString()}`;
-            grandTotalEl.innerHTML = `<span class="text-[#00ffff] text-base mr-1 font-normal opacity-50 not-italic">Rp</span>${subtotal.toLocaleString()}`;
-            itemCountEl.textContent = items.length;
+            itemCountHeader.textContent = items.length;
 
-            if (subtotal === 0) {
-                statusBadge.className = "px-3 py-2 border-2 font-black uppercase text-[8px] tracking-widest flex items-center gap-2 shadow-lg justify-center bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]";
-                statusBadge.innerHTML = `<i data-lucide="alert-triangle" class="w-3 h-3"></i><span>MENUNGGU DATA</span>`;
-                btnWA.disabled = true;
-                btnWA.className = "w-full py-4 flex items-center justify-center gap-3 font-black text-base transition-all bg-zinc-900 text-zinc-700 border border-zinc-800 cursor-not-allowed";
-            } else if (selisih < 0) {
-                statusBadge.className = "px-3 py-2 border-2 font-black uppercase text-[8px] tracking-widest flex items-center gap-2 shadow-lg justify-center bg-red-500/10 border-red-500 text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.3)]";
-                statusBadge.innerHTML = `<i data-lucide="coins" class="w-3 h-3"></i><span>SISA: Rp${Math.abs(selisih).toLocaleString()}</span>`;
-                btnWA.disabled = false;
-                btnWA.className = "w-full py-4 flex items-center justify-center gap-3 font-black text-base transition-all bg-white text-black shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:bg-[#00ffff] group";
-            } else if (selisih > 0) {
-                statusBadge.className = "px-3 py-2 border-2 font-black uppercase text-[8px] tracking-widest flex items-center gap-2 shadow-lg justify-center bg-emerald-500/10 border-emerald-500 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]";
-                statusBadge.innerHTML = `<i data-lucide="check-circle-2" class="w-3 h-3"></i><span>KEMBALI: Rp${selisih.toLocaleString()}</span>`;
-                btnWA.disabled = false;
-                btnWA.className = "w-full py-4 flex items-center justify-center gap-3 font-black text-base transition-all bg-white text-black shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:bg-[#00ffff] group";
-            } else {
-                statusBadge.className = "px-3 py-2 border-2 font-black uppercase text-[8px] tracking-widest flex items-center gap-2 shadow-lg justify-center bg-[#00ffff]/10 border-[#00ffff] text-[#00ffff] shadow-[0_0_15px_rgba(0,255,255,0.3)]";
-                statusBadge.innerHTML = `<i data-lucide="check-circle-2" class="w-3 h-3"></i><span>LUNAS</span>`;
-                btnWA.disabled = false;
-                btnWA.className = "w-full py-4 flex items-center justify-center gap-3 font-black text-base transition-all bg-white text-black shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:bg-[#00ffff] group";
-            }
+            const updateStatus = (badge) => {
+                if (subtotal === 0) {
+                    badge.className = "flex px-3 py-1 border-2 font-black uppercase text-[8px] tracking-widest items-center gap-2 bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]";
+                    badge.innerHTML = `<span>WAITING_INPUT</span>`;
+                    btnWA.disabled = true;
+                    btnWA.classList.add('grayscale');
+                } else if (selisih < 0) {
+                    badge.className = "flex px-3 py-1 border-2 font-black uppercase text-[8px] tracking-widest items-center gap-2 bg-red-500/10 border-red-500 text-red-500 shadow-[0_0_10px_rgba(239,68,68,0.3)]";
+                    badge.innerHTML = `<i data-lucide="coins" class="w-3 h-3"></i><span>SISA: Rp${Math.abs(selisih).toLocaleString()}</span>`;
+                    btnWA.disabled = false;
+                    btnWA.classList.remove('grayscale');
+                    btnWA.className = "w-full sm:w-64 py-3 flex items-center justify-center gap-2 font-black text-xs transition-all relative group bg-white text-black shadow-white/20";
+                } else if (selisih > 0) {
+                    badge.className = "flex px-3 py-1 border-2 font-black uppercase text-[8px] tracking-widest items-center gap-2 bg-emerald-500/10 border-emerald-500 text-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.3)]";
+                    badge.innerHTML = `<i data-lucide="check-circle-2" class="w-3 h-3"></i><span>KEMBALI: Rp${selisih.toLocaleString()}</span>`;
+                    btnWA.disabled = false;
+                    btnWA.classList.remove('grayscale');
+                    btnWA.className = "w-full sm:w-64 py-3 flex items-center justify-center gap-2 font-black text-xs transition-all relative group bg-white text-black shadow-white/20";
+                } else {
+                    badge.className = "flex px-3 py-1 border-2 font-black uppercase text-[8px] tracking-widest items-center gap-2 bg-[#00ffff]/10 border-[#00ffff] text-[#00ffff] shadow-[0_0_10px_rgba(0,255,255,0.3)]";
+                    badge.innerHTML = `<i data-lucide="check-circle-2" class="w-3 h-3"></i><span>SETTLED_LUNAS</span>`;
+                    btnWA.disabled = false;
+                    btnWA.classList.remove('grayscale');
+                    btnWA.className = "w-full sm:w-64 py-3 flex items-center justify-center gap-2 font-black text-xs transition-all relative group bg-white text-black shadow-white/20";
+                }
+            };
+
+            updateStatus(statusBadge);
+            updateStatus(statusBadgeMobile);
             lucide.createIcons();
         }
 
@@ -464,11 +494,40 @@
             renderDp();
         };
 
-        // RESET ALL FUNCTION
+        window.setEditing = (id) => {
+            editingId = id;
+            renderItems();
+            if(id) {
+                setTimeout(() => document.getElementById(`editName-${id}`).focus(), 10);
+            }
+        };
+
+        window.saveEdit = (id) => {
+            const newName = document.getElementById(`editName-${id}`).value;
+            const newQty = document.getElementById(`editQty-${id}`).value;
+            const newPrice = document.getElementById(`editPrice-${id}`).value;
+
+            items = items.map(item => {
+                if (item.id === id) {
+                    return {
+                        ...item,
+                        name: newName.toUpperCase(),
+                        qty: parseInt(newQty) || 0,
+                        price: parseInt(newPrice) || 0
+                    };
+                }
+                return item;
+            });
+
+            editingId = null;
+            renderItems();
+        };
+
         btnResetAll.onclick = () => {
-            if (confirm("KONFIRMASI: Hapus seluruh data sistem? (Nama, List, dan Pembayaran)")) {
+            if (confirm("KONFIRMASI: Hapus seluruh data sistem?")) {
                 items = [];
                 dpList = [];
+                editingId = null;
                 customerNameInput.value = '';
                 phoneInput.value = '';
                 document.getElementById('itemName').value = '';
@@ -478,6 +537,7 @@
                 
                 renderItems();
                 renderDp();
+                setTab('input');
                 customerNameInput.focus();
             }
         };
@@ -512,8 +572,11 @@
             window.open(waUrl, '_blank');
         };
 
-        // Initialize Icons
+        // Initialize Icons & UI
         lucide.createIcons();
+        if (window.innerWidth <= 768) {
+            setTab('input');
+        }
     </script>
 </body>
 </html>
